@@ -1,0 +1,6 @@
+site_name: Kin SDK
+pages:
+  - Home: index.md
+  - Android: android.md
+  - iOS: ios.md
+  - Python: python.md
