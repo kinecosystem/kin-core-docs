@@ -1,4 +1,4 @@
-# Overview
+# Kin SDK
 
 ## What is Kin?
 
@@ -25,6 +25,6 @@ The Python SDK allows for sending and receiving KIN on a backend app.
 
 
 [kinecosystem]: https://kinecosystem.org/
-[android]: https://github.com/kinecosystem/kin-core-android
-[ios]: https://github.com/kinecosystem/kin-core-ios
-[python]: https://github.com/kinecosystem/kin-core-python
+[android]: android.md
+[ios]: ios.md
+[python]: python.md
