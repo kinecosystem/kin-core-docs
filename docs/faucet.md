@@ -1,13 +1,15 @@
 # Faucet Service
-This service can be used to fund accounts with kin  
+This service can be used to fund accounts with KIN  
 The main repository is at [github.com/kinecosystem/stellar-faucet](https://github.com/kinecosystem/stellar-faucet)
+
+For users to use KIN inside your digital service, they will need to receive a grant of KIN, and you can use this service to give it to them.
 
 # Set up the faucet service  
 ## Prerequisites
 
 
 * Edit the 'seeds.txt' file with the seeds and channels you wish to use.  
-  The main seed is mandatory, and all of the kin funded will be taken from this account.  
+  The main seed is mandatory since all of the funded KIN will be sent from this account.  
   Channel seeds are optional and are used to improve the handling of high number of requests at the same time.
 ```
 main seed  
@@ -19,7 +21,18 @@ channel seed 5
 .  
 .
 ```  
-* Edit the docker-compose.yaml file and update the environmental variables  
+* Edit the docker-compose.yaml file and update the "SEEDS_NUMBER" variable  
+  You can also configure the rest of the variables if you wish to use a costume network.  
+```
+SEEDS_NUMBER - The number of seeds you are using
+
+# By defualt, these are all configured to the public stellar testnet
+# You dont need to change them unless you are using a different network
+
+HORIZON_ENDPOINT - The url of the horizon instance you are using
+NETWORK_PASSPHRASE - The passphrase of the horizon instance you are using
+KIN_ISSUER - The address of the KIN issuer
+```
 
 ## Run locally
 1. Install [docker and docker-compose](https://docs.docker.com/install/)
@@ -30,13 +43,13 @@ $ sudo docker-compose up
 The faucet will run on localhost:5000
 
 ## Deploy to a remote machine
-(This assumes that the remote machine has ubuntu 16+ installed)  
+(The remote machine needs to run Ubuntu 16+)  
 1. Install [ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)  
 2. Install the [angstwad.docker_ubuntu](https://github.com/angstwad/docker.ubuntu) role:
 ```bash
 $ ansible-galaxy install angstwad.docker_ubuntu -p playbook/roles/
 ```
-3. Edit the 'hosts' file inside ```playbook/inventory``` and add the IPs of the remote machines
+3. Edit the 'hosts' file inside ```playbook/inventory``` and add the IP of the remote machine
 4. Run the playbook:
 ```bash
 $ ansible-playbook -i playbook/inventory/ playbook/main.yml
@@ -45,14 +58,14 @@ The faucet will run on <ip\>:5000
 
 # Endpoints  
 Success will return http code 200  
-Excpected errors will return http code 400  
+Expected errors will return http code 400  
 Unexpected errors will return http code 500
 
 **GET '/status'**  
 ```
 {
 'address': 'GBDUPSZP4APH3PNFIMYMTHIGCQQ2GKTPRBDTPCORALYRYJZJ35O2LOBL',
-'network': 'TESTNET',
+'network': 'COSTUME',
 'channels': 
     {
     'all': 8, 
@@ -88,3 +101,4 @@ OR
          'unexcpected error: exception message'
 }
 ```
+
