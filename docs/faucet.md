@@ -22,7 +22,7 @@ channel seed 5
 .
 ```  
 * Edit the docker-compose.yaml file and update the "SEEDS_NUMBER" variable  
-  You can also configure the rest of the variables if you wish to use a costume network.  
+  You can also configure the rest of the variables if you wish to use a custom network.  
 ```
 SEEDS_NUMBER - The number of seeds you are using
 
@@ -65,7 +65,7 @@ Unexpected errors will return http code 500
 ```
 {
 'address': 'GBDUPSZP4APH3PNFIMYMTHIGCQQ2GKTPRBDTPCORALYRYJZJ35O2LOBL',
-'network': 'COSTUME',
+'network': 'CUSTOM',
 'channels': 
     {
     'all': 8, 
