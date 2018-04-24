@@ -34,7 +34,7 @@ Possible alternative `"error"` values are:
 - Amount parameter missing
 - Account parameter missing
 - Invalid amount
-- unexcpected error: <exception message>
+- Unexcpected error: exception message
 
 ### Health Check
 
@@ -72,5 +72,5 @@ HTTP 200
 Or in case of an error:
 
 ```json
-{ "error": "unexpected error: exception message" }  
+{ "error": "unexpected error: exception message" }
 ```
