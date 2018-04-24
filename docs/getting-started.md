@@ -53,8 +53,9 @@ Note that this knowledge is not required for you to start working with KIN on th
 Onboarding a user involves the following steps:
 
 1. The user (client) creates an account.
-1. That accounts gets funded by a funding service.
+1. That accounts gets fees, funded by a funding service.
 1. The user activates the account for sending and receiving KIN.
+1. That account gets KIN, funded by a KIN faucet service.
 
 ### Backend Services
 
