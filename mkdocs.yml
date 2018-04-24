@@ -2,6 +2,7 @@ site_name: Kin SDK
 repo_url: https://github.com/kinecosystem/kin-core-docs/
 pages:
   - Home: index.md
+  - Getting Started: getting-started.md
   - Android: android.md
   - iOS: ios.md
   - Python: python.md
