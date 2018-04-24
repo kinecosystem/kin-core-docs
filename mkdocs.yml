@@ -1,4 +1,5 @@
 site_name: Kin SDK
+repo_url: https://github.com/kinecosystem/kin-core-docs/
 pages:
   - Home: index.md
   - Android: android.md
