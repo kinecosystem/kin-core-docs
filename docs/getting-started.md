@@ -60,8 +60,8 @@ Onboarding a user involves the following steps:
 
 For development and testing purposes, the Kin ecosystem test network provides the required funding services:
 
-1. [Fee token faucet service][fee-faucet.md]: Funds new account with the base reserve native token, used for transactions fees.
-1. [KIN faucet service][kin-faucet.md]: Funds accounts with KIN.
+1. [Fee token faucet service](fee-faucet.md): Funds new account with the base reserve native token, used for transactions fees.
+1. [KIN faucet service](kin-faucet.md): Funds accounts with KIN.
 
 ### Client Integration
 
