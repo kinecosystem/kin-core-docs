@@ -3,7 +3,8 @@ repo_url: https://github.com/kinecosystem/kin-core-docs/
 pages:
   - Home: index.md
   - Getting Started: getting-started.md
+  - Fee Faucet: fee-faucet.md
+  - KIN Faucet: kin-faucet.md
   - Android: android.md
   - iOS: ios.md
   - Python: python.md
-  - Faucet: faucet.md
