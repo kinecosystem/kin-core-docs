@@ -1,4 +1,5 @@
 # Android
+
 This Android library is responsible for creating a new Stellar account and managing KIN balance and transactions.
 
 The main repository is at [github.com/kinecosystem/kin-core-android](https://github.com/kinecosystem/kin-core-android).
@@ -6,6 +7,7 @@ The main repository is at [github.com/kinecosystem/kin-core-android](https://git
 ## Build
 
 Add this to your module's `build.gradle` file.
+
 ```gradle
 repositories {
     ...
@@ -20,15 +22,19 @@ dependencies {
     compile "com.github.kinecosystem:kin-core-android:<latest release>"
 }
 ```
+
 For latest release version go to [https://github.com/kinecosystem/kin-core-android/releases](https://github.com/kinecosystem/kin-core-android/releases)
 
 ## Usage
+
 ### Connecting to a service provider
+
 Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`. 
 
 A `ServiceProvider` provides details of how to access the Stellar horizon end point.
 The example below creates a `ServiceProvider` that will be used to connect to the main (production) Stellar 
 network
+
 ```java
 ServiceProvider horizonProvider =  
     new ServiceProvider("https://horizon.stellar.org", ServiceProvider.NETWORK_ID_MAIN);
@@ -36,14 +42,17 @@ KinClient kinClient = new KinClient(context, horizonProvider);
 ```
 
 To connect to a test Stellar network use the following ServiceProvider:
+
 ```java
 new ServiceProvider("https://horizon-testnet.stellar.org", ServiceProvider.NETWORK_ID_TEST)
 ``` 
 
 ### Creating and retrieving a KIN account
+
 The first time you use `KinClient` you need to create a new account, 
 the details of the created account will be securely stored on the device.
 Multiple accounts can be created using `addAccount`.
+
 ```java
 KinAccount account;
 try {
@@ -55,8 +64,8 @@ try {
 }
 ```
 
-
 Calling `getAccount` with the existing account index, will retrieve the account stored on the device.
+
 ```java
 if (kinClient.hasAccount()) {
     account = kinClient.getAccount(0);
@@ -65,11 +74,13 @@ if (kinClient.hasAccount()) {
 
 You can delete your account from the device using `deleteAccount`, 
 but beware! you will lose all your existing KIN if you do this.
+
 ```java
 kinClient.deleteAccount(int index);
 ``` 
 
 ### Onboarding
+
 A first step before an account can be used, is to create the account on Stellar blockchain, by a different entity (Server side) that has an account on Stellar network.
 
 The second step is to activate this account on the client side, using `activate` method. The account will not be able to receive or send KIN before activation.
@@ -89,6 +100,7 @@ activationRequest.run(new ResultCallback<Void>() {
     }
 });
 ``` 
+
 For a complete example of this process, take a look at Sample App `OnBoarding` class.
 
 #### Query Account Status
@@ -125,14 +137,17 @@ statusRequest.run(new ResultCallback<Integer>() {
 ```
 
 ### Public Address
+
 Your account can be identified via it's public address. To retrieve the account public address use:
+
 ```java
 account.getPublicAddress();
 ```
 
-
 ### Retrieving Balance
+
 To retrieve the balance of your account in KIN call the `getBalance` method: 
+
 ```java
 Request<Balance> balanceRequest = account.getBalance();
 balanceRequest.run(new ResultCallback<Balance>() {
@@ -150,10 +165,12 @@ balanceRequest.run(new ResultCallback<Balance>() {
 ```
 
 ### Transfering KIN to another account
+
 To transfer KIN to another account, you need the public address of the account you want 
 to transfer the KIN to. 
 
 The following code will transfer 20 KIN to account "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO". 
+
 ```java
 String toAddress = "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO";
 BigDecimal amountInKin = new BigDecimal("20");
@@ -175,6 +192,7 @@ transactionRequest.run(new ResultCallback<TransactionId>() {
 ```
 
 #### Memo
+
 Arbitrary data can be added to a transfer operation using the memo parameter,
 the memo is a `String` of up to 28 characters.
 
@@ -194,10 +212,12 @@ transactionRequest.run(new ResultCallback<TransactionId>() {
         }
 });
 ```
+
 ### Listening to payments
 
 Ongoing payments in KIN, from or to an account, can be observed,
 by adding payment listener using `BlockchainEvents`:
+
 ```java
 ListenerRegistration listenerRegistration = account.blockchainEvents()
             .addPaymentListener(new EventListener<PaymentInfo>() {
@@ -209,9 +229,11 @@ ListenerRegistration listenerRegistration = account.blockchainEvents()
                 }
             });
 ```
+
 For unregister the listener use `listenerRegistration.remove()` method.
 
 ### Listening to account creation
+
 Account creation on the blockchain network, can be observed, by adding create account listener using `BlockchainEvents`:
 
 ```java
@@ -223,6 +245,7 @@ ListenerRegistration listenerRegistration = account.blockchainEvents()
                 }
             });
 ```
+
 For unregister the listener use `listenerRegistration.remove()` method.
 
 ### Sync vs Async
