@@ -64,6 +64,103 @@ For development and testing purposes, the Kin ecosystem test network provides th
 1. [Fee token faucet service](fee-faucet.md): Funds new account with the base reserve native token, used for transactions fees.
 1. [KIN faucet service](kin-faucet.md): Funds accounts with KIN.
 
-### Client Integration
+### Example
 
-Please see [Android](android.md), [iOS](ios.md), and [Python](python.md) pages on client integration.
+We'll use the [Android SDK](android.md) as an example.
+Please see [iOS](ios.md) page as well for an alternative implementation.
+
+```java
+// Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`.
+//
+// A `ServiceProvider` provides details of how to access the Stellar horizon end point.
+// The example below creates a `ServiceProvider` that will be used to connect to the main (production) Stellar
+// network
+ServiceProvider horizonProvider =
+    new ServiceProvider("https://horizon-kik.kininfrastructure.com", ServiceProvider.NETWORK_ID_MAIN);
+KinClient kinClient = new KinClient(context, horizonProvider);
+
+// Create a KIN account.
+KinAccount account;
+try {
+    if (!kinClient.hasAccount()) {
+        account = kinClient.addAccount();
+    }
+} catch (CreateAccountException e) {
+    e.printStackTrace();
+}
+
+// Calling `getAccount` with the existing account index, will retrieve the account stored on the device.
+if (kinClient.hasAccount()) {
+    account = kinClient.getAccount(0);
+}
+
+// A first step before an account can be used, is to create the account on Stellar blockchain,
+// by a different entity (Server side) that has an account on Stellar network.
+//
+// The second step is to activate this account on the client side, using `activate` method.
+// The account will not be able to receive or send KIN before activation.
+Request<Void> activationRequest = account.activate()
+activationRequest.run(new ResultCallback<Void>() {
+    @Override
+    public void onResult(Void result) {
+        Log.d("example", "Account is activated");
+    }
+
+    @Override
+    public void onError(Exception e) {
+        e.printStackTrace();
+    }
+});
+
+// Your account can be identified via it's public address.
+// To retrieve the account public address use:
+account.getPublicAddress();
+
+// To retrieve the balance of your account in KIN call the `getBalance` method:
+Request<Balance> balanceRequest = account.getBalance();
+balanceRequest.run(new ResultCallback<Balance>() {
+
+    @Override
+    public void onResult(Balance result) {
+        Log.d("example", "The balance is: " + result.value(2));
+    }
+
+    @Override
+        public void onError(Exception e) {
+            e.printStackTrace();
+        }
+});
+
+// To transfer KIN to another account, you need the public address of the account you want
+// to transfer the KIN to.
+//
+// The following code will transfer 20 KIN to account "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO".
+String toAddress = "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO";
+BigDecimal amountInKin = new BigDecimal("20");
+
+transactionRequest = account.sendTransaction(toAddress, amountInKin);
+transactionRequest.run(new ResultCallback<TransactionId>() {
+
+    @Override
+        public void onResult(TransactionId result) {
+            Log.d("example", "The transaction id: " + result.toString());
+        }
+
+        @Override
+        public void onError(Exception e) {
+            e.printStackTrace();
+        }
+});
+
+// Ongoing payments in KIN, from or to an account, can be observed
+// by adding payment listener using `BlockchainEvents`:
+ListenerRegistration listenerRegistration = account.blockchainEvents()
+            .addPaymentListener(new EventListener<PaymentInfo>() {
+                @Override
+                public void onEvent(PaymentInfo payment) {
+                    Log.d("example", String
+                        .format("payment event, to = %s, from = %s, amount = %s", payment.sourcePublicKey(),
+                            payment.destinationPublicKey(), payment.amount().toPlainString());
+                }
+            });
+```
