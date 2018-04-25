@@ -1,26 +1,27 @@
-![Kin iOS](../.github/kin_ios.png)
+# iOS
 
-#  KinSDK
-
-A library for using Kin.
+This library is responsible for creating a new Kin account and managing balance and transactions in Kin.
 
 The main repository is at [github.com/kinecosystem/kin-core-ios](https://github.com/kinecosystem/kin-core-ios).
 
 ## Installation
 
-#### CocoaPods
+### CocoaPods
 
 Add the following to your `Podfile`.
+
 ```
 pod 'KinSDK'
 ```
 
-#### Sub-project
+### Sub-project
 
 1. Clone this repo (as a submodule or in a different directory, it's up to you).
+
 ```
 git clone --recursive https://github.com/kinfoundation/kin-core-ios
 ```
+
 2. Drag `KinSDK.xcodeproj` as a subproject.
 3. In your main `.xcodeproj` file, select the desired target(s).
 4. Go to **Build Phases**, expand Target Dependencies, and add `KinSDK`.
@@ -33,13 +34,14 @@ This is how we did the Sample App - you might look at the setup for a concrete e
 The SDK exposes two classes, `KinClient`, and `KinAccount`.
 
 ### KinClient
+
 `KinClient` stores the configuration for the network, and is responsible for managing accounts.
 
 ```swift
 let kinClient = try? KinClient(with: URL, networkId: NetworkId)
 ```
 
-##### Account Management
+#### Account Management
 
 ```swift
 public func addAccount() throws -> KinAccount
@@ -53,9 +55,10 @@ public private(set) var accounts: KinAccounts
 
 ### KinAccount
 
-Before an account can be used on the configured network, it must be funded with the native network currency.  This step must be performed by a service, and is outside the scope of this SDK.
+Before an account can be used on the configured network, it must be funded with the native network currency.
+This step must be performed by a service, and is outside the scope of this SDK.
 
-##### <a name="activation"></a>Activation
+#### Activation
 
 Before an account can receive KIN, it must be activated.
 
@@ -67,9 +70,10 @@ account.activate(completion: { txHash, error in
 })
 ```
 
-##### KIN
+#### KIN
 
 To retrieve the account's current balance:
+
 ```swift
 func balance(completion: @escaping BalanceCompletion)
 ```
@@ -81,6 +85,7 @@ func watchBalance(_ balance: Decimal?) throws -> BalanceWatch
 ```
 
 To send KIN to another user:
+
 ```swift
 func sendTransaction(to recipient: String,
                          kin: Decimal,
@@ -92,25 +97,28 @@ The `memo` field can contain a string up to 28 characters in length.  A typical 
 
 ---
 
-##### Miscellaneous
+#### Miscellaneous
 
 ```swift
 var publicAddress: String { get }
 ```
+
 The account's address on the network.  This is the identifier used to specify the destination for a payment, or to request account creation from a service.
 
 
 ```swift
 func status(completion: @escaping (AccountStatus?, Error?) -> Void)
 ```
+
 Preparing an account for use is a two-step process.
-1. Creating the account.  This is done by an external service.
-2. Activating the account.  This is done using the API mentioned <a href="#activation">above</a>.
+
+1. Creating the account. This is done by an external service.
+2. Activating the account. This is done using the API mentioned <a href="#activation">above</a>.
 
 To obtain the current status of the account, call the above API.
 
 
-#### Other Methods
+### Other Methods
 
 Both `KinClient` and `KinAccount` have other methods which should prove useful.  Specifically, `KinAccount` has alternative methods for many operations that are either synchronous, or return a Promise, instead of using a completion handler.
 
