@@ -19,11 +19,11 @@ repositories {
 dependencies {
     ...
 
-    compile "com.github.kinfoundation:kin-core-android:<latest release>"
+    compile "com.github.kinecosystem:kin-core-android:<latest release>"
 }
 ```
 
-For latest release version go to https://github.com/kinfoundation/kin-core-android/releases
+For latest release version go to [https://github.com/kinecosystem/kin-core-android/releases](https://github.com/kinecosystem/kin-core-android/releases)
 
 ## Usage
 
@@ -81,9 +81,10 @@ kinClient.deleteAccount(int index);
 
 ### Onboarding
 
-Before an account can be used, it must be created on Stellar blockchain, by a different entity (Server) that has an account 
-on Stellar network.
-and then must the account must be activated, before it can receive or send KIN.
+A first step before an account can be used, is to create the account on Stellar blockchain, by a different entity (Server side) that has an account on Stellar network.
+
+The second step is to activate this account on the client side, using `activate` method. The account will not be able to receive or send KIN before activation.
+
 
 ```java
 Request<Void> activationRequest = account.activate()
@@ -101,6 +102,39 @@ activationRequest.run(new ResultCallback<Void>() {
 ``` 
 
 For a complete example of this process, take a look at Sample App `OnBoarding` class.
+
+#### Query Account Status
+
+Current account status on the blockchain can be queried using `getStatus` method,
+status will be one of the following 3 options:
+* `AccountStatus.NOT_CREATED` - Account is not created yet on the blockchain network.
+* `AccountStatus.NOT_ACTIVATED` - Account was created but not activated yet, the account cannot send or receive KIN yet.
+* `AccountStatus.ACTIVATED` - Account was created and activated, account can send and receive KIN.
+
+```java
+Request<Integer> statusRequest = account.getStatus();
+statusRequest.run(new ResultCallback<Integer>() {
+    @Override
+    public void onResult(Integer result) {
+        switch (result) {
+            case AccountStatus.ACTIVATED:
+                //you're good to go!!!
+                break;
+            case AccountStatus.NOT_ACTIVATED:
+                //activate account using account.activate() for sending/receiving KIN
+                break;
+            case AccountStatus.NOT_CREATED:
+                //first create an account on the blockchain, second activate the account using account.activate()
+                break;
+        }
+    }
+
+    @Override
+    public void onError(Exception e) {
+
+    }
+});
+```
 
 ### Public Address
 
@@ -157,7 +191,7 @@ transactionRequest.run(new ResultCallback<TransactionId>() {
 });
 ```
 
-##### Memo
+#### Memo
 
 Arbitrary data can be added to a transfer operation using the memo parameter,
 the memo is a `String` of up to 28 characters.
