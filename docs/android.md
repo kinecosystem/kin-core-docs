@@ -273,7 +273,7 @@ try {
 
 ### Sample Application 
 
-For a more detailed example on how to use the library please take a look at our [Sample App](sample/).
+For a more detailed example on how to use the library please take a look at our [Sample App](https://github.com/kinecosystem/kin-core-android/tree/dev/sample/).
 
 ## Testing
 
