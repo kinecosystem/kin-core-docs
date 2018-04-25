@@ -272,16 +272,10 @@ try {
 ```
 
 ### Sample Application 
+
 For a more detailed example on how to use the library please take a look at our [Sample App](sample/).
 
 ## Testing
 
 Both Unit tests and Android tests are provided, Android tests include integration tests that run on the Stellar test network, 
 these tests are marked as `@LargeTest`, because they are time consuming, and depends on the network.
-
-
-## Contributing
-Please review our [CONTRIBUTING.md](CONTRIBUTING.md) guide before opening issues and pull requests.
-
-## License
-The kin-core-android library is licensed under [MIT license](LICENSE.md).
