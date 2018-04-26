@@ -2,14 +2,14 @@
 
 The main repository is at [github.com/kinecosystem/kin-core-python](https://github.com/kinecosystem/kin-core-python).
 
-## Requirements.
+## Requirements
 
 Make sure you have Python 2 >=2.7.9.
 
 ## Installation 
 
 ```bash
-pip install git+https://github.com/kinfoundation/kin-core-python.git
+pip install git+https://github.com/kinecosystem/kin-core-python.git
 ```
 
 ## Usage
@@ -17,6 +17,7 @@ pip install git+https://github.com/kinfoundation/kin-core-python.git
 ### Initialization
 
 To initialize the SDK, you need to provide the following parameters:
+
 - (optional) the secret key to init the internal SDK wallet with. If not provided, you will NOT be able to use the 
   following functions: `get_address`, `get_native_balance`, `get_kin_balance`, `create_account`, `monitor_kin_payments`.
 - (optional) the endpoint URI of your [Horizon](https://www.stellar.org/developers/horizon/reference/) node. 
