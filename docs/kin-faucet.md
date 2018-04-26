@@ -21,7 +21,7 @@ HTTP GET /fund?account=<account address>&amount=<kin amount to fund>
 
 ```json
 {
-  "succsseful": true,
+  "succsseful": true/false
   "error": null
 }
 ```
