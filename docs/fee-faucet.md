@@ -19,7 +19,7 @@ If you're curious, please see [the following Stellar documentation](https://www.
 for further details.
 
 ```
-HTTP GET http://friendbot-kik.kininfrastructure.com/addr=<account address>
+HTTP GET http://friendbot-kik.kininfrastructure.com/?addr=<account address>
 
 HTTP 200 OK
 ```
