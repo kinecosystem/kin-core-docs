@@ -1,10 +1,6 @@
 # Android
 
-This Android library is responsible for creating a new Stellar account and managing KIN balance and transactions.
-
-The main repository is at [github.com/kinecosystem/kin-core-android](https://github.com/kinecosystem/kin-core-android).
-
-## Build
+## Add Kin Core SDK to your project
 
 Add this to your module's `build.gradle` file.
 
@@ -23,29 +19,24 @@ dependencies {
 }
 ```
 
-For latest release version go to [https://github.com/kinecosystem/kin-core-android/releases](https://github.com/kinecosystem/kin-core-android/releases)
+For latest release version go to [https://github.com/kinecosystem/kin-core-android/releases](https://github.com/kinecosystem/kin-core-android/releases).
 
-## Usage
+The main repository is at [github.com/kinecosystem/kin-core-android](https://github.com/kinecosystem/kin-core-android).
+
+## Get Started
 
 ### Connecting to a service provider
 
-Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`. 
+Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`.
 
 A `ServiceProvider` provides details of how to access the Stellar horizon end point.
-The example below creates a `ServiceProvider` that will be used to connect to the main (production) Stellar 
-network
+The example below creates a `ServiceProvider` that will be used to connect to the kin test network:
 
 ```java
 ServiceProvider horizonProvider =  
-    new ServiceProvider("https://horizon.stellar.org", ServiceProvider.NETWORK_ID_MAIN);
+    new ServiceProvider("https://horizon-kik.kininfrastructure.com", ServiceProvider.NETWORK_ID_TEST);
 KinClient kinClient = new KinClient(context, horizonProvider);
 ```
-
-To connect to a test Stellar network use the following ServiceProvider:
-
-```java
-new ServiceProvider("https://horizon-testnet.stellar.org", ServiceProvider.NETWORK_ID_TEST)
-``` 
 
 ### Creating and retrieving a KIN account
 
@@ -70,21 +61,21 @@ Calling `getAccount` with the existing account index, will retrieve the account 
 if (kinClient.hasAccount()) {
     account = kinClient.getAccount(0);
 }
-``` 
+```
 
 You can delete your account from the device using `deleteAccount`, 
 but beware! you will lose all your existing KIN if you do this.
 
 ```java
 kinClient.deleteAccount(int index);
-``` 
+```
 
-### Onboarding
+## Onboarding
 
-A first step before an account can be used, is to create the account on Stellar blockchain, by a different entity (Server side) that has an account on Stellar network.
+Before an account can be used on the configured network, it must be funded with the native network asset,
+This step must be performed by a service, see [Fee token faucet service](fee-faucet.md).
 
 The second step is to activate this account on the client side, using `activate` method. The account will not be able to receive or send KIN before activation.
-
 
 ```java
 Request<Void> activationRequest = account.activate()
@@ -99,15 +90,26 @@ activationRequest.run(new ResultCallback<Void>() {
         e.printStackTrace();
     }
 });
-``` 
+```
 
-For a complete example of this process, take a look at Sample App `OnBoarding` class.
+For more details see [Onboarding](onboarding.md), also take a look at Sample App [OnBoarding](https://github.com/kinecosystem/kin-core-android/blob/dev/sample/src/main/java/kin/core/sample/OnBoarding.java) class for a complete example.
 
-#### Query Account Status
+## Account Information
+
+### Public Address
+
+Your account can be identified via it's public address. To retrieve the account public address use:
+
+```java
+account.getPublicAddress();
+```
+
+### Query Account Status
 
 Current account status on the blockchain can be queried using `getStatus` method,
 status will be one of the following 3 options:
-* `AccountStatus.NOT_CREATED` - Account is not created yet on the blockchain network.
+
+* `AccountStatus.NOT_CREATED` - Account is not created (funded with native asset) on the network.
 * `AccountStatus.NOT_ACTIVATED` - Account was created but not activated yet, the account cannot send or receive KIN yet.
 * `AccountStatus.ACTIVATED` - Account was created and activated, account can send and receive KIN.
 
@@ -136,14 +138,6 @@ statusRequest.run(new ResultCallback<Integer>() {
 });
 ```
 
-### Public Address
-
-Your account can be identified via it's public address. To retrieve the account public address use:
-
-```java
-account.getPublicAddress();
-```
-
 ### Retrieving Balance
 
 To retrieve the balance of your account in KIN call the `getBalance` method: 
@@ -164,17 +158,17 @@ balanceRequest.run(new ResultCallback<Balance>() {
 });
 ```
 
-### Transfering KIN to another account
+## Transactions
 
-To transfer KIN to another account, you need the public address of the account you want 
-to transfer the KIN to. 
+### Transferring KIN to another account
 
-The following code will transfer 20 KIN to account "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO". 
+To transfer KIN to another account, you need the public address of the account you want to transfer the KIN to.
+
+The following code will transfer 20 KIN to account "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO".
 
 ```java
 String toAddress = "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO";
 BigDecimal amountInKin = new BigDecimal("20");
-
 
 transactionRequest = account.sendTransaction(toAddress, amountInKin);
 transactionRequest.run(new ResultCallback<TransactionId>() {
@@ -213,6 +207,8 @@ transactionRequest.run(new ResultCallback<TransactionId>() {
 });
 ```
 
+## Account Listeners
+
 ### Listening to payments
 
 Ongoing payments in KIN, from or to an account, can be observed,
@@ -230,7 +226,19 @@ ListenerRegistration listenerRegistration = account.blockchainEvents()
             });
 ```
 
-For unregister the listener use `listenerRegistration.remove()` method.
+### Listening to balance changes
+
+Account balance changes, can be observed by adding balance listener using `BlockchainEvents`:
+
+```java
+ListenerRegistration listenerRegistration = account.blockchainEvents()
+            .addBalanceListener(new EventListener<Balance>() {
+                @Override
+                public void onEvent(Balance balance) {
+                    Log.d("example", "balance event, new balance is = " + balance.value().toPlainString());
+                }
+            });
+```
 
 ### Listening to account creation
 
@@ -241,21 +249,19 @@ ListenerRegistration listenerRegistration = account.blockchainEvents()
             .addAccountCreationListener(new EventListener<Void>() {
                 @Override
                 public void onEvent(Void result) {
-                    Log.d("example", "Account has created.);                     
+                    Log.d("example", "Account has created.);
                 }
             });
 ```
 
-For unregister the listener use `listenerRegistration.remove()` method.
+For unregister any listener use `listenerRegistration.remove()` method.
 
-### Sync vs Async
+## Sync vs Async
 
-Asynchronous requests are supported by our `Request` object. The `request.run()` method will perform the request on a serial 
-background thread and notify success/failure using `ResultCallback` on the android main thread. 
+Asynchronous requests are supported by our `Request` object. The `request.run()` method will perform the requests sequentially on a single background thread and notify success/failure using `ResultCallback` on the android main thread.
 In addition, `cancel(boolean)` method can be used to safely cancel requests and detach callbacks.
 
-
-A synchronous version of these methods is also provided. Make sure you call them in a background thread.
+A synchronous version (with the 'Sync' suffix) of these methods is also provided, as SDK requests performs network IO operations, make sure you call them in a background thread.
 
 ```java
 try {
@@ -268,14 +274,14 @@ try {
     TransactionId transactionId = account.sendTransactionSync(toAddress, amountInKin);
 } catch (OperationFailedException e){
     // something else went wrong - check the exception message
-} 
+}
 ```
 
-### Sample Application 
+## Sample Application
 
 For a more detailed example on how to use the library please take a look at our [Sample App](https://github.com/kinecosystem/kin-core-android/tree/dev/sample/).
 
 ## Testing
 
-Both Unit tests and Android tests are provided, Android tests include integration tests that run on the Stellar test network, 
+Both Unit tests and Android tests are provided, Android tests include integration tests that run on the Stellar test network,
 these tests are marked as `@LargeTest`, because they are time consuming, and depends on the network.

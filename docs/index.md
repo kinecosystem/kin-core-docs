@@ -1,6 +1,5 @@
-# Kin SDK
 
-## Introduction
+# Introduction
 
 ### What is Kin?
 
@@ -21,15 +20,3 @@ It's goal is to abstract complexities surrounding blockchain technologies,
 and let developers focus on building a great product without worrying too much on the underlying layers.
 An example of some abstractions that the SDK takes care of are:
 Which blockchain network is being used, Account funding, Fee management, Cryptographic seed creation, Establishing token trustlines, and more.
-
-### What platforms are supported for the Kin SDK?
-
-Currently [Android](android.md) and [iOS](ios.md) for mobile, and [Python](python.md) for web development.
-
-The mobile SDKs allow for sending and receiving KIN on your phone.
-
-The Python SDK allows for sending and receiving KIN on a backend app.
-
-## Getting started
-
-Please see [Getting Started](getting-started.md) page.

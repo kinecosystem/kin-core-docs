@@ -38,7 +38,7 @@ Possible alternative `"error"` values are:
 
 ### Health Check
 
-Checks the status of the service. I most cases the returned HTTP status code is enough.
+Checks the status of the service. In most cases the returned HTTP status code is enough.
 Nevertheless, the services replies with verbose information.
 
 ```

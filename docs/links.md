@@ -7,7 +7,7 @@
     - [Currency](https://t.me/kincurrency)
     - [Technology](https://t.me/kintechnology)
 - Blogs
-    - [Kin Foundation](https://medium.com/kinfoundation)
-    - [Kin Contributors](https://medium.com/kin-contributors )
+    - [Kin Blog](https://medium.com/kinfoundation)
+    - [Inside Kin](https://medium.com/inside-kin )
 - [Youtube](https://www.youtube.com/channel/UCZ0z9fRKhW-GEjQs-_Jxfyg)
-- [Kin Ecosystem Webiste](https://kinecosystem.org/)
+- [Kin Ecosystem Website](https://kinecosystem.org/)
