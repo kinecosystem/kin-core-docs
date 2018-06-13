@@ -27,7 +27,7 @@ The main repository is at [github.com/kinecosystem/kin-core-android](https://git
 
 ### Connecting to a service provider
 
-Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`.
+Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`, optional third parameter is `storeKey` which can be used to create a multiple accounts data set, each different `storeKey` will have a separate data, an example use-case - store multiple users accounts separately.
 
 A `ServiceProvider` provides details of how to access the Stellar horizon end point.
 The example below creates a `ServiceProvider` that will be used to connect to the kin test network:
@@ -35,7 +35,7 @@ The example below creates a `ServiceProvider` that will be used to connect to th
 ```java
 ServiceProvider horizonProvider =  
     new ServiceProvider("https://horizon-kik.kininfrastructure.com", ServiceProvider.NETWORK_ID_TEST);
-KinClient kinClient = new KinClient(context, horizonProvider);
+KinClient kinClient = new KinClient(context, horizonProvider, "user1");
 ```
 
 ### Creating and retrieving a KIN account
@@ -276,6 +276,16 @@ try {
     // something else went wrong - check the exception message
 }
 ```
+
+## Error Handling
+
+kin-core wraps errors with exceptions, synchronous methods can throw exceptions and asynchronous requests has `onError` callback.
+
+### Common Errors
+
+`AccountNotFoundException` - Account is not created (funded with native asset) on the network.  
+`AccountNotActivatedException` - Account was created but not activated yet, the account cannot send or receive KIN yet.  
+`InsufficientKinException` - Account has not enough kin funds to perform the transaction.
 
 ## Sample Application
 
