@@ -289,7 +289,7 @@ try {
 
 ## Sample Application
 
-![Sample App](.github/android_sample_app_screenshot.png)
+![Sample App](../.github/android_sample_app_screenshot.png)
 
 Sample app covers the entire functionality of `kin-core`, and serves as a detailed example on how to use the library.  
 Sample app source code can be found [here](https://github.com/kinecosystem/kin-core-android/tree/dev/sample/).
