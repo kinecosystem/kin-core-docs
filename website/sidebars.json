@@ -1,0 +1,8 @@
+{
+  "Guides": {
+    "Guides": ["intro", "getting-started", "onboarding", "kin-faucet"]
+  },
+  "docs-other": {
+    "First Category": ["doc4", "doc5"]
+  }
+}

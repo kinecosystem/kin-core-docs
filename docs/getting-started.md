@@ -1,4 +1,8 @@
-# Getting Started
+---
+id: getting-started
+title: Getting Started
+sidebar_label: Getting Started
+---
 
 A service (e.g. a mobile app) that adds support for the KIN cryptocurrency needs to do a few things:
 

@@ -1,4 +1,8 @@
-# KIN Faucet Service
+---
+id: kin-faucet
+sidebar_label: KIN Faucet Service
+title: KIN Faucet Service
+---
 
 This service funds accounts with KIN, for free. It is only available on the test network.
 Funding costs real world money, and digital services joining the Kin Ecosystem

@@ -1,5 +1,8 @@
+---
+id: intro
+title: Introduction
+---
 
-# Introduction
 
 ### What is Kin?
 

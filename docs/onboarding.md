@@ -1,4 +1,7 @@
-# Onboarding
+---
+id: onboarding
+title: Onboarding
+---
 
 ### Flow
 
