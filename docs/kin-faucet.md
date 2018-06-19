@@ -1,6 +1,5 @@
 ---
 id: kin-faucet
-sidebar_label: KIN Faucet Service
 title: KIN Faucet Service
 ---
 

@@ -1,4 +1,8 @@
-# Android
+---
+id: android
+sidebar_label: Android
+title: kin-core-android
+---
 
 ## Add Kin Core SDK to your project
 
@@ -27,7 +31,7 @@ The main repository is at [github.com/kinecosystem/kin-core-android](https://git
 
 ### Connecting to a service provider
 
-Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`.
+Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`, optional third parameter is `storeKey` which can be used to create a multiple accounts data set, each different `storeKey` will have a separate data, an example use-case - store multiple users accounts separately.
 
 A `ServiceProvider` provides details of how to access the Stellar horizon end point.
 The example below creates a `ServiceProvider` that will be used to connect to the kin test network:
@@ -35,7 +39,7 @@ The example below creates a `ServiceProvider` that will be used to connect to th
 ```java
 ServiceProvider horizonProvider =  
     new ServiceProvider("https://horizon-kik.kininfrastructure.com", ServiceProvider.NETWORK_ID_TEST);
-KinClient kinClient = new KinClient(context, horizonProvider);
+KinClient kinClient = new KinClient(context, horizonProvider, "user1");
 ```
 
 ### Creating and retrieving a KIN account
@@ -188,7 +192,7 @@ transactionRequest.run(new ResultCallback<TransactionId>() {
 #### Memo
 
 Arbitrary data can be added to a transfer operation using the memo parameter,
-the memo is a `String` of up to 28 characters.
+the memo can contain a utf-8 string up to 28 bytes in length. A typical usage is to include an order number that a service can use to verify payment.
 
 ```java
 String memo = "arbitrary data";
@@ -277,11 +281,55 @@ try {
 }
 ```
 
+## Error Handling
+
+`kin-core` wraps errors with exceptions, synchronous methods can throw exceptions and asynchronous requests has `onError(Exception e)` callback.
+
+### Common Errors
+
+`AccountNotFoundException` - Account is not created (funded with native asset) on the network.  
+`AccountNotActivatedException` - Account was created but not activated yet, the account cannot send or receive KIN yet.  
+`InsufficientKinException` - Account has not enough kin funds to perform the transaction.
+
 ## Sample Application
 
-For a more detailed example on how to use the library please take a look at our [Sample App](https://github.com/kinecosystem/kin-core-android/tree/dev/sample/).
+![Sample App](../.github/android_sample_app_screenshot.png)
 
-## Testing
+Sample app covers the entire functionality of `kin-core`, and serves as a detailed example on how to use the library.  
+Sample app source code can be found [here](https://github.com/kinecosystem/kin-core-android/tree/dev/sample/).
 
-Both Unit tests and Android tests are provided, Android tests include integration tests that run on the Stellar test network,
-these tests are marked as `@LargeTest`, because they are time consuming, and depends on the network.
+## Building from Source
+
+Clone the repo:
+
+```bash
+$ git clone https://github.com/kinecosystem/kin-core-android.git
+```
+
+Next, initialize and update git submodules:
+
+```bash
+$ git submodule init && git submodule update
+```
+
+Now you can build the library using gradle, or open the project using Android Studio.
+
+### Tests
+
+Both Unit tests and instrumentation tests are provided, Android tests include integration tests that run on a remote test network, these tests are marked as `@LargeTest`, because they are time consuming, and depends on the network.
+
+### Running Tests
+
+For running both unit tests and instrumentation tests and generating a code coverage report using Jacoco, use `jacocoTestReport` task
+```bash
+$ ./gradlew jacocoTestReport
+```
+
+Running tests without integration tests
+
+```bash
+$ ./gradlew jacocoTestReport  -Pandroid.testInstrumentationRunnerArguments.notClass=kin.core.KinAccountIntegrationTest
+```
+
+Generated report can be found at:  
+`kin-core/build/reports/jacoco/jacocoTestReport/html/index.html`.

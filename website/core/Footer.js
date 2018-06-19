@@ -35,54 +35,68 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('doc1.html', this.props.language)}>
-              Getting Started (or other categories)
+            <a href={this.docUrl('getting-started.html')}>
+              Getting Started
             </a>
-            <a href={this.docUrl('doc2.html', this.props.language)}>
-              Guides (or other categories)
+            <a href={this.docUrl('android.html')}>
+              Android
             </a>
-            <a href={this.docUrl('doc3.html', this.props.language)}>
-              API Reference (or other categories)
+            <a href={this.docUrl('ios.html')}>
+              IOS
+            </a>
+            <a href={this.docUrl('python.html')}>
+              Python
             </a>
           </div>
           <div>
-            <h5>Community</h5>
-            <a href={this.pageUrl('users.html', this.props.language)}>
-              User Showcase
-            </a>
+            <h5>Reddit</h5>
             <a
-              href="http://stackoverflow.com/questions/tagged/"
+              href="https://www.reddit.com/r/KinFoundation/"
               target="_blank"
               rel="noreferrer noopener">
-              Stack Overflow
+              r/KinFoundation
             </a>
-            <a href="https://discordapp.com/">Project Chat</a>
-            <a
-              href="https://twitter.com/"
+            <h6>Telegram</h6>
+            <a href="https://t.me/KinAnnouncements"
               target="_blank"
               rel="noreferrer noopener">
-              Twitter
-            </a>
+              Announcements</a>
+            <a href="https://t.me/kinfoundation"
+              target="_blank"
+              rel="noreferrer noopener">
+              General</a>
+            <a href="https://t.me/kincurrency"
+              target="_blank"
+              rel="noreferrer noopener">
+              Currency</a>
+            <a href="https://t.me/kintechnology"
+              target="_blank"
+              rel="noreferrer noopener">
+              Technology</a>
           </div>
           <div>
             <h5>More</h5>
-            <a href={this.props.config.baseUrl + 'blog'}>Blog</a>
-            <a href="https://github.com/">GitHub</a>           
+            <a href="https://medium.com/kinfoundation"
+              target="_blank"
+              rel="noreferrer noopener">Kin Blog</a>
+            <a href="https://medium.com/inside-kin"
+              target="_blank"
+              rel="noreferrer noopener">Inside Kin Blog</a>
+            <a
+              href="https://twitter.com/kin_foundation"
+              target="_blank"
+              rel="noreferrer noopener">
+              Twitter
+              </a>
+            <a href="https://www.youtube.com/channel/UCZ0z9fRKhW-GEjQs-_Jxfyg"
+              target="_blank"
+              rel="noreferrer noopener">YouTube</a>
+            <a href="https://kinecosystem.org"
+              target="_blank"
+              rel="noreferrer noopener">Kin Ecosystem</a>
           </div>
         </section>
 
-        <a
-          href="https://code.facebook.com/projects/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="fbOpenSource">
-          <img
-            src={this.props.config.baseUrl + 'img/oss_logo.png'}
-            alt="Facebook Open Source"
-            width="170"
-            height="45"
-          />
-        </a>
         <section className="copyright">{this.props.config.copyright}</section>
       </footer>
     );

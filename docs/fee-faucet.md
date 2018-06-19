@@ -1,3 +1,8 @@
+---
+id: fee-faucet
+title: Fee Faucet Service
+---
+
 # Fee Faucet Service
 
 This service funds accounts with the native token for free, required for paying transaction fees.

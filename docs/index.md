@@ -1,9 +1,7 @@
----
-id: intro
-title: Introduction
----
 
-## What is Kin?
+# Introduction
+
+### What is Kin?
 
 Kin is a cryptocurrency with a mission to compensate everyone fairly for their contributions.
 It creates a new way for big and small businesses, apps, networks, and digital services to monetize
@@ -13,7 +11,7 @@ businesses can compensate their users for the value they’re bringing and the c
 
 For more information, please visit [kinecosystem.org](https://kinecosystem.org).
 
-## What is this website?
+### What is this website?
 
 This website has technical documentation for the Kin SDK.
 The SDK allows developers to add support for sending and receiving KIN in an app, community, or digital service.

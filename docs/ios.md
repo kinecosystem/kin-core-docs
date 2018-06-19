@@ -1,4 +1,8 @@
-# iOS
+---
+id: ios
+sidebar_label: IOS
+title: kin-core-ios
+---
 
 This library is responsible for creating a new Kin account and managing balance and transactions in Kin.
 

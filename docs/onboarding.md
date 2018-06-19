@@ -3,7 +3,7 @@ id: onboarding
 title: Onboarding
 ---
 
-### Flow
+## Flow
 
 Onboarding a user involves the following steps:
 
@@ -12,14 +12,14 @@ Onboarding a user involves the following steps:
 3. The user activates the account for sending and receiving KIN.
 4. (Optional) That account funded with KIN, using a KIN faucet service.
 
-### Backend Services
+## Backend Services
 
 For development and testing purposes, the Kin ecosystem test network provides the required funding services:
 
 1. [Fee token faucet service](fee-faucet.md): Funds new account with the base reserve native token, used for transactions fees.
 1. [KIN faucet service](kin-faucet.md): Funds accounts with KIN.
 
-### Example
+## Example
 
 We'll use the [Android SDK](android.md) as an example.
 Please see [iOS](ios.md) page as well for an alternative implementation.  

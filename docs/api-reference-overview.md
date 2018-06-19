@@ -1,3 +1,8 @@
+---
+id: api-reference-overview
+title: Overview
+---
+
 ### What platforms are supported for the Kin SDK?
 
 Currently [Android](android.md) and [iOS](ios.md) for mobile, and [Python](python.md) for web development.

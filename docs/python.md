@@ -1,4 +1,8 @@
-# Python
+---
+id: python
+sidebar_label: Python
+title: kin-core-python
+---
 
 The main repository is at [github.com/kinecosystem/kin-core-python](https://github.com/kinecosystem/kin-core-python).
 
