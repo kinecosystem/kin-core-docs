@@ -21,7 +21,7 @@ HTTP GET /fund?account=<account address>&amount=<kin amount to fund>
 
 ```json
 {
-  "succsseful": true/false
+  "successful": true/false
   "error": null
 }
 ```
@@ -34,11 +34,11 @@ Possible alternative `"error"` values are:
 - Amount parameter missing
 - Account parameter missing
 - Invalid amount
-- Unexcpected error: exception message
+- Unexpected error: exception message
 
 ### Health Check
 
-Checks the status of the service. I most cases the returned HTTP status code is enough.
+Checks the status of the service. In most cases the returned HTTP status code is enough.
 Nevertheless, the services replies with verbose information.
 
 ```
