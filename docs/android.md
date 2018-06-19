@@ -188,7 +188,7 @@ transactionRequest.run(new ResultCallback<TransactionId>() {
 #### Memo
 
 Arbitrary data can be added to a transfer operation using the memo parameter,
-the memo is a `String` of up to 28 characters.
+the memo can contain a utf-8 string up to 28 bytes in length. A typical usage is to include an order number that a service can use to verify payment.
 
 ```java
 String memo = "arbitrary data";
