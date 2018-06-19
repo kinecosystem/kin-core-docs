@@ -19,7 +19,7 @@ dependencies {
 }
 ```
 
-For latest release version go to [https://github.com/kinecosystem/kin-core-android/releases](https://github.com/kinecosystem/kin-core-android/releases).
+For the latest release version, go to [https://github.com/kinecosystem/kin-core-android/releases](https://github.com/kinecosystem/kin-core-android/releases).
 
 The main repository is at [github.com/kinecosystem/kin-core-android](https://github.com/kinecosystem/kin-core-android).
 
@@ -27,10 +27,10 @@ The main repository is at [github.com/kinecosystem/kin-core-android](https://git
 
 ### Connecting to a service provider
 
-Create a new `KinClient` with two arguments: an android `Context` and a `ServiceProvider`, optional third parameter is `storeKey` which can be used to create a multiple accounts data set, each different `storeKey` will have a separate data, an example use-case - store multiple users accounts separately.
+Create a new `KinClient` with two arguments: an Android `Context` and a `ServiceProvider`. An optional third parameter is `storeKey`, which can be used to create a data set for multiple accounts. Each different `storeKey` will have separate data (for example, when storing multiple user accounts separately).
 
-A `ServiceProvider` provides details of how to access the Stellar horizon end point.
-The example below creates a `ServiceProvider` that will be used to connect to the kin test network:
+A `ServiceProvider` provides details of how to access the Stellar Horizon end point.
+The example below creates a `ServiceProvider` that will be used to connect to the Kin test network:
 
 ```java
 ServiceProvider horizonProvider =  
@@ -40,8 +40,8 @@ KinClient kinClient = new KinClient(context, horizonProvider, "user1");
 
 ### Creating and retrieving a KIN account
 
-The first time you use `KinClient` you need to create a new account, 
-the details of the created account will be securely stored on the device.
+The first time you use `KinClient` you need to create a new account.
+The details of the created account will be securely stored on the device.
 Multiple accounts can be created using `addAccount`.
 
 ```java
@@ -55,7 +55,7 @@ try {
 }
 ```
 
-Calling `getAccount` with the existing account index, will retrieve the account stored on the device.
+Calling `getAccount` with the existing account index will retrieve the account stored on the device.
 
 ```java
 if (kinClient.hasAccount()) {
@@ -64,7 +64,7 @@ if (kinClient.hasAccount()) {
 ```
 
 You can delete your account from the device using `deleteAccount`, 
-but beware! you will lose all your existing KIN if you do this.
+but beware! You will lose all your existing KIN if you do this.
 
 ```java
 kinClient.deleteAccount(int index);
@@ -72,10 +72,10 @@ kinClient.deleteAccount(int index);
 
 ## Onboarding
 
-Before an account can be used on the configured network, it must be funded with the native network asset,
-This step must be performed by a service, see [Fee token faucet service](fee-faucet.md).
+Before an account can be used on the configured network, it must be funded with the native network asset.
+This step must be performed by a service, see [Fee Faucet Service](fee-faucet.md).
 
-The second step is to activate this account on the client side, using `activate` method. The account will not be able to receive or send KIN before activation.
+The second step is to activate this account on the client side, using the `activate` method. The account will not be able to receive or send KIN before activation.
 
 ```java
 Request<Void> activationRequest = account.activate()
@@ -92,13 +92,13 @@ activationRequest.run(new ResultCallback<Void>() {
 });
 ```
 
-For more details see [Onboarding](onboarding.md), also take a look at Sample App [OnBoarding](https://github.com/kinecosystem/kin-core-android/blob/dev/sample/src/main/java/kin/core/sample/OnBoarding.java) class for a complete example.
+For more details, see [Onboarding](onboarding.md). Also, take a look at the [Sample App Onboarding](https://github.com/kinecosystem/kin-core-android/blob/dev/sample/src/main/java/kin/core/sample/OnBoarding.java) class for a complete example.
 
 ## Account Information
 
 ### Public Address
 
-Your account can be identified via it's public address. To retrieve the account public address use:
+Your account can be identified via its public address. To retrieve the account public address, use:
 
 ```java
 account.getPublicAddress();
@@ -106,11 +106,11 @@ account.getPublicAddress();
 
 ### Query Account Status
 
-Current account status on the blockchain can be queried using `getStatus` method,
-status will be one of the following 3 options:
+Current account status on the blockchain can be queried using `getStatus` method.
+Status will be one of the following three options:
 
 * `AccountStatus.NOT_CREATED` - Account is not created (funded with native asset) on the network.
-* `AccountStatus.NOT_ACTIVATED` - Account was created but not activated yet, the account cannot send or receive KIN yet.
+* `AccountStatus.NOT_ACTIVATED` - Account was created but not activated, the account cannot send or receive KIN.
 * `AccountStatus.ACTIVATED` - Account was created and activated, account can send and receive KIN.
 
 ```java
@@ -140,7 +140,7 @@ statusRequest.run(new ResultCallback<Integer>() {
 
 ### Retrieving Balance
 
-To retrieve the balance of your account in KIN call the `getBalance` method: 
+To retrieve the KIN balance of your account, call the `getBalance` method: 
 
 ```java
 Request<Balance> balanceRequest = account.getBalance();
@@ -164,7 +164,7 @@ balanceRequest.run(new ResultCallback<Balance>() {
 
 To transfer KIN to another account, you need the public address of the account you want to transfer the KIN to.
 
-The following code will transfer 20 KIN to account "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO".
+The following code will transfer 20 KIN to the account at address "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO".
 
 ```java
 String toAddress = "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO";
@@ -187,8 +187,8 @@ transactionRequest.run(new ResultCallback<TransactionId>() {
 
 #### Memo
 
-Arbitrary data can be added to a transfer operation using the memo parameter,
-the memo can contain a utf-8 string up to 28 bytes in length. A typical usage is to include an order number that a service can use to verify payment.
+Arbitrary data can be added to a transfer operation using the memo parameter.
+The memo can contain a UTF-8 string up to 28 bytes in length. A typical use case for this is to include an order number that a service can use to verify payment.
 
 ```java
 String memo = "arbitrary data";
@@ -211,8 +211,7 @@ transactionRequest.run(new ResultCallback<TransactionId>() {
 
 ### Listening to payments
 
-Ongoing payments in KIN, from or to an account, can be observed,
-by adding payment listener using `BlockchainEvents`:
+Ongoing payments in KIN, from or to an account, can be observed by adding a payment listener, using `BlockchainEvents`:
 
 ```java
 ListenerRegistration listenerRegistration = account.blockchainEvents()
@@ -228,7 +227,7 @@ ListenerRegistration listenerRegistration = account.blockchainEvents()
 
 ### Listening to balance changes
 
-Account balance changes, can be observed by adding balance listener using `BlockchainEvents`:
+Account balance changes can be observed by adding balance listener, using `BlockchainEvents`:
 
 ```java
 ListenerRegistration listenerRegistration = account.blockchainEvents()
@@ -242,7 +241,7 @@ ListenerRegistration listenerRegistration = account.blockchainEvents()
 
 ### Listening to account creation
 
-Account creation on the blockchain network, can be observed, by adding create account listener using `BlockchainEvents`:
+Account creation on the blockchain network can be observed by adding a create account listener, using `BlockchainEvents`:
 
 ```java
 ListenerRegistration listenerRegistration = account.blockchainEvents()
@@ -254,14 +253,14 @@ ListenerRegistration listenerRegistration = account.blockchainEvents()
             });
 ```
 
-For unregister any listener use `listenerRegistration.remove()` method.
+To unregister any listener, use the `listenerRegistration.remove()` method.
 
 ## Sync vs Async
 
-Asynchronous requests are supported by our `Request` object. The `request.run()` method will perform the requests sequentially on a single background thread and notify success/failure using `ResultCallback` on the android main thread.
-In addition, `cancel(boolean)` method can be used to safely cancel requests and detach callbacks.
+Asynchronous requests are supported by our `Request` object. The `request.run()` method will perform the requests sequentially on a single background thread and note success/failure using `ResultCallback` on the Android main thread.
+In addition, the `cancel(boolean)` method can be used to safely cancel requests and detach callbacks.
 
-A synchronous version (with the 'Sync' suffix) of these methods is also provided, as SDK requests performs network IO operations, make sure you call them in a background thread.
+A synchronous version (with the 'Sync' suffix) of these methods is also provided. As SDK requests perform network I/O operations, make sure you call them in a background thread.
 
 ```java
 try {
@@ -279,20 +278,20 @@ try {
 
 ## Error Handling
 
-`kin-core` wraps errors with exceptions, synchronous methods can throw exceptions and asynchronous requests has `onError(Exception e)` callback.
+`kin-core` wraps errors with exceptions. Synchronous methods can throw exceptions, and asynchronous requests have the `onError(Exception e)` callback.
 
 ### Common Errors
 
 `AccountNotFoundException` - Account is not created (funded with native asset) on the network.  
-`AccountNotActivatedException` - Account was created but not activated yet, the account cannot send or receive KIN yet.  
-`InsufficientKinException` - Account has not enough kin funds to perform the transaction.
+`AccountNotActivatedException` - Account was created but not activated, the account cannot send or receive KIN.  
+`InsufficientKinException` - Account does not have enough KIN funds to perform the transaction.
 
 ## Sample Application
 
 ![Sample App](../.github/android_sample_app_screenshot.png)
 
-Sample app covers the entire functionality of `kin-core`, and serves as a detailed example on how to use the library.  
-Sample app source code can be found [here](https://github.com/kinecosystem/kin-core-android/tree/dev/sample/).
+The sample app covers the entire functionality of `kin-core`, and serves as a detailed example on how to use the library.  
+The sample app source code can be found [here](https://github.com/kinecosystem/kin-core-android/tree/dev/sample/).
 
 ## Building from Source
 
@@ -312,20 +311,22 @@ Now you can build the library using gradle, or open the project using Android St
 
 ### Tests
 
-Both Unit tests and instrumentation tests are provided, Android tests include integration tests that run on a remote test network, these tests are marked as `@LargeTest`, because they are time consuming, and depends on the network.
+Both unit tests and instrumentation tests are provided. Android tests include integration tests that run on a remote test network. These tests are marked as `@LargeTest`, because they are time consuming and depend on the network.
 
 ### Running Tests
 
-For running both unit tests and instrumentation tests and generating a code coverage report using Jacoco, use `jacocoTestReport` task
+For running both unit tests and instrumentation tests and generating a code coverage report using Jacoco, use the `jacocoTestReport` task:
+
 ```bash
 $ ./gradlew jacocoTestReport
 ```
 
-Running tests without integration tests
+Running tests without integration tests:
 
 ```bash
 $ ./gradlew jacocoTestReport  -Pandroid.testInstrumentationRunnerArguments.notClass=kin.core.KinAccountIntegrationTest
 ```
 
-Generated report can be found at:  
+The generated report can be found at: 
+
 `kin-core/build/reports/jacoco/jacocoTestReport/html/index.html`.
