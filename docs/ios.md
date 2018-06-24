@@ -64,7 +64,9 @@ kinClient.deleteAccount(at: 0)
 ## Onboarding
 
 Before an account can be used on the configured network, it must be funded with the native network currency.
-This step must be performed by a service, such as the <a href="https://github.com/kinecosystem/kin-core-docs/blob/7f0714ba6f317401de7c5878f93ca574e5edec4c/docs/fee-faucet.md">Native Asset Faucet Service</a>.
+This step must be performed by a service, such as the [Native Asset Faucet Service](fee-faucet.md).
+
+For a complete example of this process, take a look at <a href="https://github.com/kinecosystem/kin-core-ios/blob/9bc5a15dc5bd56c262f17927f8bd10c163b94db3/KinSampleApp/KinSampleApp/KinSampleViewController.swift#L141">`KinSampleViewController.swift`</a>.
 
 #### Activation
 
