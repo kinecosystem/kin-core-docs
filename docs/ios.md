@@ -29,34 +29,44 @@ git clone --recursive https://github.com/kinfoundation/kin-core-ios
 
 This is how we did the Sample App - you might look at the setup for a concrete example.
 
-## API Usage
+## Getting Started
 
-The SDK exposes two classes, `KinClient`, and `KinAccount`.
+### Connecting to the Network
 
-### KinClient
-
-`KinClient` stores the configuration for the network, and is responsible for managing accounts.
+Create an instance of `KinClient`, providing the URL of the network entry-point, and the ID of the network.
 
 ```swift
-let kinClient = try? KinClient(with: URL, networkId: NetworkId)
+let url = URL(string: "https://horizon-kik.kininfrastructure.com")
+let kinClient = try? KinClient(with: url!, networkId: .mainNet)
 ```
 
-#### Account Management
+### Creating and retrieving instances of `KinAccount`
+
+On first use, an account must be created to send and receive KIN.  Account details are stored in the Keychain.  Multiple accounts may be created.
 
 ```swift
-public func addAccount() throws -> KinAccount
-
-public func deleteAccount(at index: Int) throws
-
-public private(set) var accounts: KinAccounts
+let account = try kinClient.accounts.first ?? kinClient.addAccount()
 ```
 
----
+To retrieve a specific account:
 
-### KinAccount
+
+```swift
+let account = kinClient.accounts[1]
+```
+
+An account may be deleted.  **WARNING:** deleting an account will prevent access to any KIN the account holds.  Deleting an account does **not** prevent the account from receiving additional KIN.
+
+```swift
+kinClient.deleteAccount(at: 0)
+```
+
+## Onboarding
 
 Before an account can be used on the configured network, it must be funded with the native network currency.
-This step must be performed by a service, and is outside the scope of this SDK.
+This step must be performed by a service, such as the [Native Asset Faucet Service](fee-faucet.md).
+
+For a complete example of this process, take a look at <a href="https://github.com/kinecosystem/kin-core-ios/blob/9bc5a15dc5bd56c262f17927f8bd10c163b94db3/KinSampleApp/KinSampleApp/KinSampleViewController.swift#L141">`KinSampleViewController.swift`</a>.
 
 #### Activation
 
@@ -70,64 +80,115 @@ account.activate(completion: { txHash, error in
 })
 ```
 
-#### KIN
+## Account Information
 
-To retrieve the account's current balance:
-
-```swift
-func balance(completion: @escaping BalanceCompletion)
-```
-
-To obtain a watcher object which will emit an event whenever the account's balance changes.  See the Sample App for an example.
+#### Public Address
 
 ```swift
-func watchBalance(_ balance: Decimal?) throws -> BalanceWatch
-```
-
-To send KIN to another user:
-
-```swift
-func sendTransaction(to recipient: String,
-                         kin: Decimal,
-                         memo: String?,
-                         completion: @escaping TransactionCompletion)
-```
-
-The `memo` field can contain a string up to 28 characters in length.  A typical usage is to include an order# that a service can use to verify payment.
-
----
-
-#### Miscellaneous
-
-```swift
-var publicAddress: String { get }
+let publicAddress = account.publicAddress
 ```
 
 The account's address on the network.  This is the identifier used to specify the destination for a payment, or to request account creation from a service.
 
+#### Account Status
 
 ```swift
-func status(completion: @escaping (AccountStatus?, Error?) -> Void)
+account.status(completion: { status, error in
+    if let status == status {
+        switch status {
+        case notCreated: break
+        case notActivated: break
+        case activated: break
+        }
+    }
+})
 ```
 
-Preparing an account for use is a two-step process.
+#### Retrieving KIN Balance
 
-1. Creating the account. This is done by an external service.
-2. Activating the account. This is done using the API mentioned <a href="#activation">above</a>.
+```swift
+account.balance(completion: { balance, error in
+    if let balance == balance {
+      ...
+    }
+})
+```
 
-To obtain the current status of the account, call the above API.
+## Transactions
 
+To send KIN to another account, the account's public address is required.
 
-### Other Methods
+```swift
+account.sendTransaction(to "GDIRGGTBE3H4CUIHNIFZGUECGFQ5MBGIZTPWGUHPIEVOOHFHSCAGMEHO",
+                        kin: 123,
+                        memo: "payment for donuts",
+                        completion: { txHash, errors
+                          if let txHash = txHash {
+                            // payment succeeded
+                          }
+                        })
+```
 
-Both `KinClient` and `KinAccount` have other methods which should prove useful.  Specifically, `KinAccount` has alternative methods for many operations that are either synchronous, or return a Promise, instead of using a completion handler.
+The `memo` field can contain a utf-8 string up to 28 bytes in length.  A typical usage is to include an order# that a service can use to verify payment.
 
-## Error handling
+## Account Watchers
 
-`KinSDK` wraps errors in an operation-specific error for each method of `KinAccount`.  The underlying error is the actual cause of failure.
+#### Payments
 
-### Common errors
+Payments involving the account may be observed using `watchPayments(cursor: )`.
 
-`StellarError.missingAccount`: The account does not exist on the Stellar network.  You must create the account by issuing a `CREATE_ACCOUNT` operation with `KinAccount.publicAddress` as the destination.  This is done using an app-specific service, and is outside the scope of this SDK.
+```swift
+let linkBag = LinkBag()
+let watch: PaymentWatch
 
-`StellarError.missingBalance`: For an account to receive KIN, it must trust the KIN Issuer.  Call `KinAccount.activate()` to perform this operation.
+watch = account.watchPayments(cursor: nil)
+watch.emitter
+  .on(next: {
+    print($0)
+  })
+  .add(to: linkBag)
+```
+
+#### Balance
+
+Changes to the account's balance may be observed using `watchBalance(_ :)`.
+
+```swift
+let linkBag = LinkBag()
+let watch: BalanceWatch
+
+watch = try! account.watchBalance(nil)
+watch.emitter
+  .on(next: {
+    print($0)
+  })
+  .add(to: linkBag)
+```
+
+#### Account Creation
+
+As part of preparing an account for use, it must be created on the network.  The creation event may be observed using `watchCreation()`.
+
+```swift
+try! account.watchCreation()
+  .finally {
+    print("account created")
+  }
+```
+
+## Completion Handlers vs Promises
+
+For operations which communicate with the network, the SDK offers two forms of each method:
+
+1. invokes a completion handler
+2. returns a promise
+
+The promise returned is a minimal implementation, provided by `KinUtil`.  It supports invoking a handler on success, on failure and on completion (whether the operation succeeded or failed).
+
+## Sample Application
+
+For a more detailed example on how to use the library please take a look at our <a href="https://github.com/kinecosystem/kin-core-ios/tree/master/KinSampleApp">Sample App</a>.
+
+## Testing
+
+Running unit tests for network operations requires a local Stellar network, of which, proper setup is beyond the scope of this document.  Unit tests for the keystore may be run on any system.
