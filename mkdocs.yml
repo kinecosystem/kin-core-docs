@@ -1,11 +1,18 @@
 site_name: Kin SDK
 repo_url: https://github.com/kinecosystem/kin-core-docs/
 pages:
-  - Home: index.md
-  - Getting Started: getting-started.md
-  - Fee Faucet: fee-faucet.md
-  - KIN Faucet: kin-faucet.md
-  - Android: android.md
-  - iOS: ios.md
-  - Python: python.md
-  - Official Links: links.md
+  - Guides: 
+    - Introduction: index.md
+    - Getting Started: getting-started.md
+    - Onboarding: onboarding.md
+    - Fee Faucet: fee-faucet.md
+    - KIN Faucet: kin-faucet.md
+    - Network Info: network-info.md
+    - Official Links: links.md
+  - API Reference:
+    - Overview: api-reference-overview.md
+    - Android: android.md
+    - iOS: ios.md
+    - Python: python.md
+  - Tools: tools.md
+theme: readthedocs
